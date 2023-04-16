@@ -20,11 +20,11 @@ export class AuthorService {
   }
 
   findAll() {
-    return `This action returns all author`;
+    return this.authorRepo.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} author`;
+    return this.authorRepo.findOneBy({ id });
   }
 
   update(id: number, updateAuthorDto: UpdateAuthorDto) {
@@ -32,6 +32,6 @@ export class AuthorService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} author`;
+    return this.authorRepo.delete({ id });
   }
 }

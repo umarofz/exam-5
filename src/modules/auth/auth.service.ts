@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -24,22 +24,18 @@ export class AuthService {
   }
 
   async validateUser(email, password) {
-    const user = await this.userRepo.findOneBy({ email });
-    // const hashedPassword = await bcrypt.hash(password, 10);
-    // if (!user) {
-    //   return null;
-    // }
-    // const isPasswordMatch = await bcrypt.compare(hashedPassword, user.password);
-    // if (isPasswordMatch) {
-    //   return user;
-    // }
-    // return null;
-    const hash = await bcrypt.hash(password, 10);
-    const isMatch = await bcrypt.compare(password, hash);
-    if (isMatch) {
-      delete user.password;
-      return user;
+    const userFromDb = await this.userRepo.findOne({ where: { email } });
+    if (!userFromDb)
+      throw new HttpException('USER_NOT_FOUND', HttpStatus.NOT_FOUND);
+
+    const isValidPass = await bcrypt.compare(password, userFromDb.password);
+
+    if (isValidPass) {
+      const accessToken = await this.jwtService.sign({ userId: userFromDb.id });
+      delete userFromDb.password
+      return { token: accessToken, user: userFromDb };
+    } else {
+      throw new HttpException('LOGIN.ERROR', HttpStatus.UNAUTHORIZED);
     }
-    return null;
   }
 }

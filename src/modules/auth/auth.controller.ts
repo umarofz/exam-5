@@ -16,6 +16,6 @@ export class AuthController {
   @UseGuards(LocalGuards)
   @Post('signin')
   signin(@Req() req: Request, @Body() body: any) {
-    return req.user
+    return req.user;
   }
 }
