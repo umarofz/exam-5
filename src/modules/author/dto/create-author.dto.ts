@@ -13,7 +13,6 @@ export class CreateAuthorDto {
   @IsString()
   date_of_birth: string;
 
-  @IsNotEmpty()
   @IsString()
   date_of_death: string;
 

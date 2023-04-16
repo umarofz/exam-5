@@ -45,9 +45,14 @@ export class AuthorController {
     return this.authorService.findAll();
   }
 
+  @Post(':id/books')
+  findOne(@Param('id') id: string, @Body() body: any) {
+    return this.authorService.findOne(+id, body);
+  }
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authorService.findOne(+id);
+  findOneAuthor(@Param('id') id: string) {
+    return this.authorService.findOneAuthor(+id);
   }
 
   @Patch(':id')

@@ -4,6 +4,7 @@ import { UserModule } from './modules/user/user.module';
 import { CategoryModule } from './modules/category/category.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthorModule } from './modules/author/author.module';
+import { BooksModule } from './modules/books/books.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AuthorModule } from './modules/author/author.module';
     CategoryModule,
     AuthModule,
     AuthorModule,
+    BooksModule,
   ],
   controllers: [],
   providers: [],

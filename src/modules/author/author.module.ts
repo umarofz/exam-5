@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Author } from '../../entities/author.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtMiddleware } from 'src/middlewares/checkToken';
+import { Book } from '../../entities/book.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Author]),
+    TypeOrmModule.forFeature([Author, Book]),
     JwtModule.register({ secret: 'olma' }),
   ],
   controllers: [AuthorController],

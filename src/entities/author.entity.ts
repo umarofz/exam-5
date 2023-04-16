@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Book } from './book.entity';
 
 @Entity({ name: 'authors' })
 export class Author {
@@ -25,4 +32,18 @@ export class Author {
 
   @Column({ type: 'varchar', nullable: false })
   image: string;
+
+  @ManyToMany(() => Book, (book) => book.authors)
+  @JoinTable({
+    name: 'author_book',
+    joinColumn: {
+      name: 'author_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'book_id',
+      referencedColumnName: 'id',
+    },
+  })
+  books?: Book[];
 }
