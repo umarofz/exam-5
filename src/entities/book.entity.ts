@@ -27,6 +27,9 @@ export class Book {
   @Column({ type: 'varchar', nullable: false })
   image: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  userId?: string;
+
   @ManyToMany(() => Author, (author) => author.books)
   authors?: Author[];
 }

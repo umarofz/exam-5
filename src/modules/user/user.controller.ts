@@ -3,13 +3,15 @@ import {
   Get,
   Post,
   Body,
+  Request,
   Patch,
   Param,
   Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto } from './dto/update-profile-data.dto';
+import { UpdateUserPasswordDto } from './dto/update-profile-pass.dto';
 
 @Controller('users')
 export class UserController {
@@ -31,8 +33,21 @@ export class UserController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  updateProfileData(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Request() req: Request,
+  ) {
+    return this.userService.updateProfileData(+id, updateUserDto, req);
+  }
+
+  @Patch(':id/changePassword')
+  updateProfilePassword(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserPasswordDto,
+    @Request() req: Request,
+  ) {
+    return this.userService.updateProfilePassword(+id, updateUserDto, req);
   }
 
   @Delete(':id')

@@ -8,6 +8,9 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  Request,
+  ParseFilePipe,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
@@ -35,9 +38,15 @@ export class BooksController {
   )
   create(
     @Body() createBookDto: CreateBookDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: /\.(pdf|mp3)$/ })],
+      }),
+    )
+    file: Express.Multer.File,
+    @Request() req: Request,
   ) {
-    return this.booksService.create(createBookDto, file);
+    return this.booksService.create(createBookDto, file, req);
   }
 
   @Get()
