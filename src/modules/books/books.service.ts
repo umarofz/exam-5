@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Book } from 'src/entities/book.entity';
+import { Book } from '../../entities/book.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 
@@ -19,6 +19,7 @@ export class BooksService {
   ) {
     // @ts-ignore
     const user = this.jwtService.verify(req.headers.authorization);
+
     const book = this.bookRepo.create({
       ...createBookDto,
       image: file.filename,
@@ -37,12 +38,11 @@ export class BooksService {
   findOne(id: number) {
     return this.bookRepo.findOne({
       where: { id },
-      relations: { authors: true },
+      relations: {
+        comment: true,
+        authors: true,
+      },
     });
-  }
-
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
   }
 
   remove(id: number) {

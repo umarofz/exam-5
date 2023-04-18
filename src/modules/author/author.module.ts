@@ -4,7 +4,7 @@ import { AuthorController } from './author.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Author } from '../../entities/author.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtMiddleware } from 'src/middlewares/checkToken';
+import { JwtMiddleware } from '../../middlewares/checkToken';
 import { Book } from '../../entities/book.entity';
 
 @Module({

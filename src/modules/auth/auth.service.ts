@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from 'src/entities/user.entity';
+import { UserEntity } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -19,8 +19,9 @@ export class AuthService {
     const newUser = { ...body, password: hash };
     const user = this.userRepo.create(newUser);
     this.userRepo.save(user);
-    const token = this.jwtService.sign({ userId: user.id });
-    return { access_token: token };
+
+    const token = this.jwtService.sign({ userId: user.email });
+    return { access_token: token, body };
   }
 
   async validateUser(email, password) {
@@ -32,7 +33,7 @@ export class AuthService {
 
     if (isValidPass) {
       const accessToken = await this.jwtService.sign({ userId: userFromDb.id });
-      delete userFromDb.password
+      delete userFromDb.password;
       return { token: accessToken, user: userFromDb };
     } else {
       throw new HttpException('LOGIN.ERROR', HttpStatus.UNAUTHORIZED);

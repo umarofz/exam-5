@@ -1,5 +1,14 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Author } from './author.entity';
+import { Comment } from './comment.entity';
+import { CategoryEntity } from './category.entity';
 
 @Entity({ name: 'books' })
 export class Book {
@@ -32,4 +41,10 @@ export class Book {
 
   @ManyToMany(() => Author, (author) => author.books)
   authors?: Author[];
+
+  @OneToMany(() => Comment, (comment) => comment.book)
+  comment: Comment[];
+
+  @ManyToOne(() => CategoryEntity, (category) => category.book)
+  category: CategoryEntity[];
 }
